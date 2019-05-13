@@ -1,7 +1,8 @@
 import paho.mqtt.client as mqtt
 from pyfirmata import Arduino,util
-board = Arduino("COM4")
+board = Arduino("/dev/ttyACM0")
 led = board.get_pin('d:13:o')
+fan = board.get_pin('d:12:o')
 class IoT():
     new_fan=0
     new_light=0
@@ -38,20 +39,29 @@ class IoT():
 
     def on_message_light(self,client,userdata,msg):
         command=str(msg.payload.decode('utf-8'))
-        print(command)
-        if command=='lights on':
+        print(command,'Now light is: ')
+        if command=='a':
             led.write(1)
-        elif command=='lights off':
+            print('on')
+        elif command=='b':
             led.write(0)
+            print('off')
         self.__init__(light=str(msg.payload.decode('utf-8')))
         pass
     
     def on_message_fan(self,client,userdata,msg):
-        print(str(msg.payload.decode('utf-8')))
+        command=str(msg.payload.decode('utf-8'))
+        print(command,'Now fan is: ')
+        if command=='a':
+            fan.write(1)
+            print('on')
+        elif command=='b':
+            fan.write(0)
+            print('off')
         self.__init__(fan=str(msg.payload.decode('utf-8')))
         pass
         
-if __name__=='__main__':
+if _name__=='__main_':
     IoT=IoT()
     client=mqtt.Client()
     client.on_connect=IoT.on_connect
