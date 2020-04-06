@@ -1,30 +1,24 @@
-<!doctype html>
 <html>
-    <head>
-<link rel="stylesheet" type='text/css' href="style.css">
-    <h1>IoT control panel</h1>
-    </head>
-    <body>
-        <section class="panel">
-    <table>
-            <tr>
-                <td>Light:</td>
-                <td><a href="light.php?light=a" class="on">On</a></td>
-                <td><a href="light.php?light=b" class="off">Off</a></td>
-            </tr>
-            <tr>
-                <td>Fan:</td>
-                <td><a href="fan.php?fan=a" class="on">On</a></td>
-                <td><a href="fan.php?fan=b" class="off">Off</a></td>
-            </tr>
-        
-    </table>
-           </section> 
-        <dev class="foot">
-            <p><b>Developer:</b> Shafin Hasnat</p>
-        <p>Mechatronics and Industrial Engineering</p>
-        <p>CUET</p>
-        </dev>
+    <head><script>
+setTimeout(function() {
+  location.reload();
+}, 2000);
+
+</script></head>
     
-    </body>
+    
+<?php
+include('setup.php');
+    
+$sql="SELECT * FROM esp WHERE id=1";
+    
+$result = mysqli_query($conn,$sql);
+$resultCheck=mysqli_num_rows($result);
+if ($resultCheck > 0){
+    while($row=mysqli_fetch_assoc($result)){
+        echo "Temperature:  ",(int)$row['temp'];
+        echo "<br> Humidity:  ",(int)$row['humidity'];
+}
+}
+?>
 </html>
